@@ -1,0 +1,18 @@
+{
+  "name": "My First Extension",
+  "version": "1.0",
+  "description": "The first extension that I made.",
+  "browser_action": {
+    "default_icon": "icon.png",
+    "popup": "popup.html"
+  },
+  "permissions": [
+  ],
+  "content_scripts": [
+	{
+		"matches": ["<all_urls>"],
+		"js": ["svg.js","Utils.js","VR.js","HR.js","ruler.js"],
+		"css": ["style.css"]
+	}
+  ]
+}
