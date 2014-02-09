@@ -1,7 +1,6 @@
 //|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 //|||||||||||||||||  This is VR |||||||||||||||||||||||||||||||
 //|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-
 var mainVR = generateMainVR();
 mainVR.appendTo(docBody);
 
@@ -11,19 +10,20 @@ function startAddingVR(e) {
 	mainVR.on('mouseout', addingVR);
 	docBody.addEventListener('mouseup', stopAddingVR);
 
-	function addingVR(e) {
+	function addingVR(e) {  // on mouse leave
 		var target = e.relatedTarget;
-
-		if ( mainVR.hasChildren(target) ) // not out of mainVR yet
+		if (mainVR.contains(target)) // not out of mainVR yet
 			return;
 
 		stopAddingVR();
 		mainCR.disable();
-
-		if (e.ctrlKey)		
+		addVR(e);
+/*		// TODO: add support for float vertical ruler
+		if (e.ctrlKey)
 			addFVR(e);
 		else
 			addVR(e);
+*/
 	}
 
 	function stopAddingVR(e) {
@@ -34,36 +34,33 @@ function startAddingVR(e) {
 	stopEvent(e);
 }
 
-
 function addVR(e) {
 	var svg =  new SVG('svg'),
 		shim = generateShim();
 
 	svg.attr({
-		viewBox: _(0, 0, grid_padding*2+grid_thickness, 5),
+		viewBox: _(0, 0, Config.grid_padding*2 + Config.grid_thickness, 5),
 		preserveAspectRatio: 'none',
 		style  : {
 			'position': 'absolute',
 			'min-height' : '100%',
-			'width'   : grid_padding*2 + grid_thickness + 'px',
+			'width'   : Config.grid_padding*2 + Config.grid_thickness + 'px',
 			'top'     : '0',
 			'cursor'  : 'col-resize',
 			'z-index' : '10001',
-			'height'  : pageDimension().height+'px',
-			'left'    : e.pageX - grid_padding  + 'px'
+			'height'  : pageDimension().height + 'px',
+			'left'    : e.pageX - Config.grid_padding + 'px'
 		}
 	}).append({
 		'$rect' : {
-			x: grid_padding,
+			x: Config.grid_padding,
 			y: 0,
 			width: 1,
 			height: 5,
-			fill: grid_color
+			fill: Config.grid_color
 		}
-	});
+	}).appendTo(docBody);
 
-
-	svg.appendTo(docBody);
 
 	var ox, oLeft, oCursor;
 
@@ -94,16 +91,16 @@ function addVR(e) {
 		shim.detach();
 
 		var x = getPosX();
-		if ( svg.lastX ) 
+		if (svg.lastX) 
 			VRx.splice(VRx.indexOf(svg.lastX),1,x);
 		else
 			VRx.push(x)
 		svg.lastX = x;
 		
 		// delete VR
-		if ( mainVR.hasChildren(e.target) ) {
+		if ( mainVR.contains(e.target) ) {
 			svg.destroy();
-			VRx.splice(VRx.indexOf(svg.lastX),1);
+			VRx.splice(VRx.indexOf(svg.lastX), 1);
 			svg = shim = null;
 		}
 
@@ -111,26 +108,24 @@ function addVR(e) {
 	}
 
 	function getPosX() {
-		return parseInt(svg.style('left')) + grid_padding;
+		return parseInt(svg.style('left')) + Config.grid_padding;
 	}
 
 	if (e) startDragging(e); // chaining event
 }
 
-
 //|||||||||||||||||||||||||||||||||||||||||||||||||||||||
 //|||||||||||  This is floating VR ||||||||||||||||||||||
 //|||||||||||||||||||||||||||||||||||||||||||||||||||||||
-
+/*
 function addFVR(e) {
-	var svg =  new SVG('svg'),
+	var svg = new NATIVE('div'),
 		shim = generateShim(),
-		org_offset = docBody.scrollWidth - docBody.offsetWidth;
+		org_offset = docBody.scrollWidth - docBody.offsetWidth,
+		deri = 0;
 
 	svg.attr({
-		viewBox: _(0, 0, grid_padding*2+grid_thickness, 5),
-		preserveAspectRatio: 'none',
-		style  : {
+		style : {
 			'position': 'absolute',
 			'min-height' : '100%',
 			'height'  : pageDimension().height+'px',
@@ -139,19 +134,19 @@ function addFVR(e) {
 			'cursor'  : 'col-resize',
 			'z-index' : '10001',
 			'left'    : '0px',
-//			'right'   : (docElem.scrollWidth%2 ? docElem.scrollWidth+1: docElem.scrollWidth) - e.pageX*2 + 'px',
-//			'right'   : (docBody.scrollWidth%2 ? docBody.scrollWidth : docBody.scrollWidth+1) - e.pageX*2 +'px',
-			'right'   : (docElem.scrollWidth%2 ? docElem.scrollWidth : docElem.scrollWidth+1) - e.pageX*2 +'px',
+//			'right'   : (docElem.scrollWidth%2 ? docElem.scrollWidth : docElem.scrollWidth+1) - e.pageX*2 +'px',
+			'right'   : mangleRight(docBody.offsetWidth - e.pageX*2) +'px',
 			'display' : 'block',
 			'margin' : '0 auto',
 		}
 	}).append({
-		'$rect' : {
-			x: grid_padding,
-			y: 0,
-			width: 1,
-			height: 5,
-			fill: 'red'
+		'$div' : {
+			style : {
+				'margin' : '0px '+grid_padding+'px',
+				'width'   : grid_thickness+'px',
+				'height'  : '100%',
+				'background' : 'red'
+			}
 		}
 	});
 
@@ -165,18 +160,16 @@ function addFVR(e) {
 	function adjustOnResize(e) {
 		var scrollWidth = Math.max(docElem.scrollWidth, docBody.scrollWidth),
 			offsetWidth = Math.max(docElem.offsetWidth, docBody.offsetWidth);
-		console.log (scrollWidth + ' , ' + offsetWidth);
+//		console.log (scrollWidth + ' , ' + offsetWidth);
 
-		//var right = mangleRight(parseInt(svg.style('right')) + org_offset - scrollWidth + offsetWidth);
-		var right = parseInt(svg.style('right')) + (org_offset - (docBody.scrollWidth - docBody.offsetWidth));
-		// udpating dependencies
-		//org_offset = Math.max(docElem.scrollWidth, docBody.scrollWidth) - Math.max(docElem.offsetWidth, docBody.offsetWidth);
-		org_offset = docBody.scrollWidth - docBody.offsetWidth;
 
+//		var right = parseInt(svg.style('right')) + org_offset -(docBody.scrollWidth -  docBody.offsetWidth);
+		var right = mangleRight(parseInt(svg.style('right')) + org_offset -(docBody.scrollWidth -  docBody.offsetWidth));
 		svg.style('right', right + 'px');
 
+		org_offset = docBody.scrollWidth - docBody.offsetWidth;
 		updateVRx();
-		console.log (svg.style('right'));
+//		console.log (svg.style('right'));
 	}
 
 	function startDragging(e) {
@@ -194,12 +187,7 @@ function addFVR(e) {
 	}
 
 	function moveVR(e) {
-		//svg.style('right', mangleRight(oRight - 2*(e.pageX - ox)) + 'px');
-		var right = oRight - 2*(e.pageX - ox);
-		if ((docElem.scrollWidth + right) %2)
-			svg.style('right', right + 'px');
-		else
-			svg.style('right', ++right + 'px')
+		svg.style('right', oRight - 2*(e.pageX -ox) + 'px');
 	}
 
 	function detachVR(e) {
@@ -209,15 +197,14 @@ function addFVR(e) {
 		shim.detach();
 
 		// udpating dependencies
-//		org_offset = Math.max(docElem.scrollWidth, docBody.scrollWidth) - Math.max(docElem.offsetWidth, docBody.offsetWidth);
-		org_offset = docBody.scrollWidth - docBody.offsetWidth;
-		org_right = parseInt(svg.style('right'));
-		console.log(org_right);
+		org_offset = docBody.scrollWidth - docBody.offsetWidth
+		console.log(parseInt(svg.style('right')));
 
 		updateVRx();	
 	
 		// delete FVR
 		if ( mainVR.hasChildren(e.target) ) {
+			window.removeEventListener('resize', adjustOnResize);
 			svg.destroy();
 			VRx.splice(VRx.indexOf(svg.lastX),1);
 			svg = shim = null;
@@ -228,7 +215,7 @@ function addFVR(e) {
 
 	function updateVRx() {
 		var x = getPosX();
-		if ( svg.lastX ) 
+		if ( svg.lastX )
 			VRx.splice(VRx.indexOf(svg.lastX),1,x);
 		else
 			VRx.push(x)
@@ -238,24 +225,30 @@ function addFVR(e) {
 	function getPosX() {
 //		return (docElem.scrollWidth %2 ? docElem.scrollWidth-1 : docElem.scrollWidth)/2 - 0.5*parseInt(svg.style('right'));
 //		return mangleRight(docElem.scrollWidth - parseInt(svg.style('right')))/2;
-		return (docBody.scrollWidth - docBody.offsetWidth)/2 - 0.5*parseInt(svg.style('right'));
+//		return (docBody.scrollWidth - docBody.offsetWidth)/2 - 0.5*parseInt(svg.style('right'));
+//		return (docElem.scrollWidth - parseInt(svg.style('right')))/2;
+		return (docBody.offsetWidth - parseInt(svg.style('right')))/2
 	}
 
-/*
 	function mangleRight(v) {
-		return v;
-		if ((docElem.scrollWidth + v) % 2)
-			return v-1;
-		else
-			return v;
+		if (deri) v = v - 1;
+
+		if ((docBody.offsetWidth + v) % 2) {
+			deri = 0
+			return v;    // odd number, return straight away
+		}
+		else {
+			deri = 1;
+			return v + deri;
+		}
 	}
-*/
 
 	if (e) startDragging(e); // chaining event
 }
+*/
 
 function generateMainVR() {
-	var THICKNESS = 15;
+	var THICKNESS = Config.rulerThickness;
 
 	var svg = new SVG('svg');
 		svg.attr({
@@ -294,7 +287,7 @@ function generateMainVR() {
 			'height' : 1,
 			'width': THICKNESS,
 			'y' : i*10,
-			'x' : THICKNESS - (i%5 ? 5 : i%10 ? 8 : THICKNESS )
+			'x' : THICKNESS - (i%5 ? 5 : i%10 ? 8 : THICKNESS)
 		}
 	}
 	svg.append(tiny_marks);

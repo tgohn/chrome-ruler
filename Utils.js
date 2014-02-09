@@ -36,11 +36,17 @@ function _(command) {
 	return ' '+str+' ';
 }
 
-var grid_padding = 8, grid_thickness = 1, grid_color = '#22F5F5',
-	CR_fill = '#07336E', ruler_color = '#07336E', ruler_stroke = 'black';
+var Config = {
+    ruler_thickess:  15,
+	grid_padding:    8,
+	grid_thickness:  1,
+	grid_color:      '#22F5F5',
+	CR_fill:         '#07336E',
+	ruler_color:     '#07336E',
+	ruler_stroke:    'black'
+}
 
 //guestColor();
-
 function guestColor() {
 	var span = document.getElementsByTagName('span')[0] || document.getElementsByTagName('p')[0] || document.getElementsByTagName('div')[0],
 		style = window.getComputedStyle(span, null);

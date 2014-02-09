@@ -249,34 +249,6 @@ function generateFilter() {
 			}
 		}
 	});
-			
-
-/*
-	defs.append({
-		'$filter' : {
-			id : id,
-			filterUnits : 'userSpaceOnUse',
-			width : '150%',
-			height: '150%',
-			'$feGaussianBlur' : {
-				'in' : 'SourceAlpha',
-				'result' : 'blur-out',
-				'stdDeviation' : 5
-			},
-			'$feOffset' : {
-				'in' : 'blur-out',
-				'result' : 'the-shadow',
-				'dx' : '0',
-				'dy' : '0'
-			},
-			'$feBlend' : {
-				'in' : 'SourceGraphic',
-				'in2': 'the-shadow',
-				'mode' : 'normal'
-			}
-		}
-	});
-*/
 
 	defs.id = id;
 	return defs;

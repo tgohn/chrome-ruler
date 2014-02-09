@@ -10,8 +10,8 @@ function SVG(tagName) {
 function NATIVE(tagName) {
 	this.dom = document.createElement(tagName);
 }
-
 NATIVE.prototype = new SVG();
+NATIVE.prototype.constructor = NATIVE;
 
 SVG.prototype.attr = function(name, content) {
 	if (typeof name == 'object')
@@ -43,7 +43,7 @@ SVG.prototype.applyTemplate = function(template) {
 	}
 	return this;
 }
-
+/*
 SVG.prototype.hasChildren = function(el) {
 	if (el instanceof SVG)
 		el = el.dom;
@@ -57,6 +57,11 @@ SVG.prototype.hasChildren = function(el) {
 
 	return false;
 }
+*/
+SVG.prototype.contains = function(el) {
+	var self = this.dom;
+	return self !== el && (self.contains ? self.contains(el) : true);
+};
 
 SVG.prototype.append = function(elm) {
 	if ( !(elm instanceof SVG) && typeof elm == 'object')
@@ -73,7 +78,7 @@ SVG.prototype.appendTemplate = function(template) {
 		if (! /^\$/.test(name))
 			throw ('invalid tagName: ' + name);
 			
-		elm = new SVG(name.replace(/^\$|_.*$/g,''));
+		elm = new this.constructor(name.replace(/^\$|_.*$/g,''));
 		elm.applyTemplate(template[name]);
 		elm.appendTo(this);
 	};

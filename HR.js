@@ -1,7 +1,6 @@
 //|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 //|||||||||||||||||  This is HR |||||||||||||||||||||||||||||||
 //|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-
 var mainHR = generateMainHR();
 mainHR.appendTo(docBody);
 
@@ -12,10 +11,10 @@ function startAddingHR(e) {
 	docBody.addEventListener('mouseup', stopAddingHR);
 
 	function addingHR(e) {
+		// mouse leave
 		var target = e.relatedTarget;
 
-		if ( mainHR.hasChildren(target) )
-			return;
+		if (mainHR.contains(target)) return;
 
 		stopAddingHR();
 		mainCR.disable();
@@ -24,7 +23,7 @@ function startAddingHR(e) {
 
 	function stopAddingHR(e) {
 		mainHR.un('mouseout', addingHR);
-		docBody.removeEventListener('mouseup', stopAddingHR);
+		docElem.removeEventListener('mouseup', stopAddingHR);
 	}
 
 	stopEvent(e);
@@ -41,7 +40,7 @@ function addHR(e) {
 		shim = generateShim();
 
 	svg.attr({
-		viewBox: _(0, 0, 5, grid_padding*2+grid_thickness),
+		viewBox: _(0, 0, 5, Config.grid_padding*2 + Config.grid_thickness),
 		preserveAspectRatio: 'none',
 		style  : {
 			'position': 'absolute',
@@ -51,23 +50,21 @@ function addHR(e) {
 			'cursor'  : 'row-resize',
 			'z-index' : '10001',
 			'width'  : pageDimension().width+'px',
-			'top'    : e.pageY - grid_padding  + 'px'
+			'top'    : e.pageY - Config.grid_padding  + 'px'
 		}
 	}).append({
 		'$rect' : {
-			y: grid_padding,
+			y: Config.grid_padding,
 			x: 0,
 			width: 5,
 			height: 1,
-			fill: grid_color
+			fill: Config.grid_color
 		}
-	});
+	}).appendTo(docBody);
 
-	svg.appendTo(docBody);
-
-	var oy, oTop, oCursor;
-		
-
+	// Start listening to Events
+	var oy, oTop, oCursor;  // o = original
+	
 	svg.on('mousedown', startDragging);
 
 	function startDragging(e) {
@@ -94,17 +91,18 @@ function addHR(e) {
 		docBody.removeEventListener('mouseup', detachHR);
 		shim.detach();
 
+		// HRy keeps track of available HRs
 		var y = getPosY();
-		if ( svg.lastY ) 
-			HRy.splice(HRy.indexOf(svg.lastY),1,y);
+		if (svg.lastY)
+			HRy.splice(HRy.indexOf(svg.lastY), 1, y); // replace last known y coord with new one
 		else
 			HRy.push(y)
 		svg.lastY = y;
 		
-		// delete VR
-		if ( mainHR.hasChildren(e.target) ) {
+		// check if deleting HR is in order
+		if ( mainHR.contains(e.target) ) {
 			svg.destroy();
-			HRy.splice(HRy.indexOf(svg.lastY),1);
+			HRy.splice(HRy.indexOf(svg.lastY), 1);
 			svg = shim = null;
 		}
 
@@ -112,15 +110,13 @@ function addHR(e) {
 	}
 
 	function getPosY() {
-		return (parseInt(svg.style('top')) + grid_padding);
+		return (parseInt(svg.style('top')) + Config.grid_padding);
 	}
 	
 	if (e) startDragging(e); 
 }
 
 function generateMainHR() {
-	var THICKNESS = 15;
-
 	var svg = new SVG('svg');
 		svg.attr({
 			style: {
@@ -130,14 +126,14 @@ function generateMainHR() {
 				'zIndex': 999999,
 				'boxShadow': 'rgba(211,211,211,0.5) 0px 0px 5px 2px'},
 			'width': '100%',
-			'height': THICKNESS,
+			'height': Config.ruler_thickness,
 			'preserveAspectRatio': 'none'
 		});
 
 	svg.append({
 		'$rect_1' : {
 			'width' : 10000,
-			'height': THICKNESS,
+			'height': Config.ruler_thickness,
 			'fill'  : 'white',
 			'x'     : 0,
 			'y'     : 0
@@ -147,7 +143,7 @@ function generateMainHR() {
 			'height': 1,
 			'fill'  : 'black',
 			'x'     : 0,
-			'y'     : THICKNESS - 1
+			'y'     : Config.ruler_thickness - 1
 		}
 	});
 
@@ -158,7 +154,7 @@ function generateMainHR() {
 			'width' : 1,
 			'height': THICKNESS,
 			'x' : i*10,
-			'y' : THICKNESS - (i%5 ? 5 : i%10 ? 8 : THICKNESS )
+			'y' : THICKNESS - (i%5 ? 5 : i%10 ? 8 : Config.ruler_thickness)
 		}
 	}
 	svg.append(tiny_marks);
