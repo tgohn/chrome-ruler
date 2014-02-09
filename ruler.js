@@ -9,7 +9,7 @@ mainCR.enable = function() {
 	mainCR.isRuling = true;
 	mainCR.shim = generateShim(10003);
 	mainCR.shim.appendTo(docBody);
-	mainCR.setFill(CR_fill);
+	mainCR.setFill(Config.CR_fill);
 	docBody.addEventListener('mousedown', addRulerCanvas);
 }
 
@@ -74,7 +74,7 @@ function addRulerCanvas(e) {
 
 	path.attr({
 		'shape-rendering' : 'geometricPrecision',
-		fill : ruler_color
+		fill : Config.ruler_color
 	});
 
 	svg.append(path).append(text).append(filter)

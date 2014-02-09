@@ -37,7 +37,7 @@ function _(command) {
 }
 
 var Config = {
-    ruler_thickess:  15,
+	rulerThickness:  15,
 	grid_padding:    8,
 	grid_thickness:  1,
 	grid_color:      '#22F5F5',

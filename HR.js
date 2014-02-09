@@ -1,6 +1,8 @@
 //|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 //|||||||||||||||||  This is HR |||||||||||||||||||||||||||||||
 //|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+var THICKNESS = Config.rulerThickness;
+
 var mainHR = generateMainHR();
 mainHR.appendTo(docBody);
 
@@ -45,7 +47,7 @@ function addHR(e) {
 		style  : {
 			'position': 'absolute',
 			'min-width' : '100%',
-			'height'   : grid_padding*2 + grid_thickness + 'px',
+			'height'   : Config.grid_padding*2 + Config.grid_thickness + 'px',
 			'left'     : '0',
 			'cursor'  : 'row-resize',
 			'z-index' : '10001',
@@ -64,7 +66,7 @@ function addHR(e) {
 
 	// Start listening to Events
 	var oy, oTop, oCursor;  // o = original
-	
+
 	svg.on('mousedown', startDragging);
 
 	function startDragging(e) {
@@ -98,7 +100,7 @@ function addHR(e) {
 		else
 			HRy.push(y)
 		svg.lastY = y;
-		
+
 		// check if deleting HR is in order
 		if ( mainHR.contains(e.target) ) {
 			svg.destroy();
@@ -112,8 +114,8 @@ function addHR(e) {
 	function getPosY() {
 		return (parseInt(svg.style('top')) + Config.grid_padding);
 	}
-	
-	if (e) startDragging(e); 
+
+	if (e) startDragging(e);
 }
 
 function generateMainHR() {
@@ -126,7 +128,7 @@ function generateMainHR() {
 				'zIndex': 999999,
 				'boxShadow': 'rgba(211,211,211,0.5) 0px 0px 5px 2px'},
 			'width': '100%',
-			'height': Config.ruler_thickness,
+			'height': THICKNESS,
 			'preserveAspectRatio': 'none'
 		});
 
@@ -143,7 +145,7 @@ function generateMainHR() {
 			'height': 1,
 			'fill'  : 'black',
 			'x'     : 0,
-			'y'     : Config.ruler_thickness - 1
+			'y'     : THICKNESS - 1
 		}
 	});
 
@@ -154,7 +156,7 @@ function generateMainHR() {
 			'width' : 1,
 			'height': THICKNESS,
 			'x' : i*10,
-			'y' : THICKNESS - (i%5 ? 5 : i%10 ? 8 : Config.ruler_thickness)
+			'y' : THICKNESS - (i%5 ? 5 : i%10 ? 8 : THICKNESS)
 		}
 	}
 	svg.append(tiny_marks);

@@ -18,12 +18,6 @@ function startAddingVR(e) {
 		stopAddingVR();
 		mainCR.disable();
 		addVR(e);
-/*		// TODO: add support for float vertical ruler
-		if (e.ctrlKey)
-			addFVR(e);
-		else
-			addVR(e);
-*/
 	}
 
 	function stopAddingVR(e) {
@@ -91,12 +85,12 @@ function addVR(e) {
 		shim.detach();
 
 		var x = getPosX();
-		if (svg.lastX) 
+		if (svg.lastX)
 			VRx.splice(VRx.indexOf(svg.lastX),1,x);
 		else
 			VRx.push(x)
 		svg.lastX = x;
-		
+
 		// delete VR
 		if ( mainVR.contains(e.target) ) {
 			svg.destroy();
@@ -114,138 +108,6 @@ function addVR(e) {
 	if (e) startDragging(e); // chaining event
 }
 
-//|||||||||||||||||||||||||||||||||||||||||||||||||||||||
-//|||||||||||  This is floating VR ||||||||||||||||||||||
-//|||||||||||||||||||||||||||||||||||||||||||||||||||||||
-/*
-function addFVR(e) {
-	var svg = new NATIVE('div'),
-		shim = generateShim(),
-		org_offset = docBody.scrollWidth - docBody.offsetWidth,
-		deri = 0;
-
-	svg.attr({
-		style : {
-			'position': 'absolute',
-			'min-height' : '100%',
-			'height'  : pageDimension().height+'px',
-			'width'   : grid_padding*2 + grid_thickness + 'px',
-			'top'     : '0',
-			'cursor'  : 'col-resize',
-			'z-index' : '10001',
-			'left'    : '0px',
-//			'right'   : (docElem.scrollWidth%2 ? docElem.scrollWidth : docElem.scrollWidth+1) - e.pageX*2 +'px',
-			'right'   : mangleRight(docBody.offsetWidth - e.pageX*2) +'px',
-			'display' : 'block',
-			'margin' : '0 auto',
-		}
-	}).append({
-		'$div' : {
-			style : {
-				'margin' : '0px '+grid_padding+'px',
-				'width'   : grid_thickness+'px',
-				'height'  : '100%',
-				'background' : 'red'
-			}
-		}
-	});
-
-	svg.appendTo(docBody);
-
-	var ox, oRight, oCursor, org_right;
-
-	svg.on('mousedown', startDragging);
-	window.addEventListener('resize', adjustOnResize);
-
-	function adjustOnResize(e) {
-		var scrollWidth = Math.max(docElem.scrollWidth, docBody.scrollWidth),
-			offsetWidth = Math.max(docElem.offsetWidth, docBody.offsetWidth);
-//		console.log (scrollWidth + ' , ' + offsetWidth);
-
-
-//		var right = parseInt(svg.style('right')) + org_offset -(docBody.scrollWidth -  docBody.offsetWidth);
-		var right = mangleRight(parseInt(svg.style('right')) + org_offset -(docBody.scrollWidth -  docBody.offsetWidth));
-		svg.style('right', right + 'px');
-
-		org_offset = docBody.scrollWidth - docBody.offsetWidth;
-		updateVRx();
-//		console.log (svg.style('right'));
-	}
-
-	function startDragging(e) {
-		ox = e.pageX;
-		oRight = parseInt(svg.style('right'));
-		oCursor = docBody.style.cursor;
-
-		shim.appendTo(docBody);
-
-		docBody.style.cursor = 'col-resize';
-		docBody.addEventListener('mousemove', moveVR);
-		docBody.addEventListener('mouseup', detachVR);
-
-		stopEvent(e);
-	}
-
-	function moveVR(e) {
-		svg.style('right', oRight - 2*(e.pageX -ox) + 'px');
-	}
-
-	function detachVR(e) {
-		docBody.style.cursor = oCursor;
-		docBody.removeEventListener('mousemove', moveVR);
-		docBody.removeEventListener('mouseup', detachVR);
-		shim.detach();
-
-		// udpating dependencies
-		org_offset = docBody.scrollWidth - docBody.offsetWidth
-		console.log(parseInt(svg.style('right')));
-
-		updateVRx();	
-	
-		// delete FVR
-		if ( mainVR.hasChildren(e.target) ) {
-			window.removeEventListener('resize', adjustOnResize);
-			svg.destroy();
-			VRx.splice(VRx.indexOf(svg.lastX),1);
-			svg = shim = null;
-		}
-
-		VRx.doSort();
-	}
-
-	function updateVRx() {
-		var x = getPosX();
-		if ( svg.lastX )
-			VRx.splice(VRx.indexOf(svg.lastX),1,x);
-		else
-			VRx.push(x)
-		svg.lastX = x;
-	}
-
-	function getPosX() {
-//		return (docElem.scrollWidth %2 ? docElem.scrollWidth-1 : docElem.scrollWidth)/2 - 0.5*parseInt(svg.style('right'));
-//		return mangleRight(docElem.scrollWidth - parseInt(svg.style('right')))/2;
-//		return (docBody.scrollWidth - docBody.offsetWidth)/2 - 0.5*parseInt(svg.style('right'));
-//		return (docElem.scrollWidth - parseInt(svg.style('right')))/2;
-		return (docBody.offsetWidth - parseInt(svg.style('right')))/2
-	}
-
-	function mangleRight(v) {
-		if (deri) v = v - 1;
-
-		if ((docBody.offsetWidth + v) % 2) {
-			deri = 0
-			return v;    // odd number, return straight away
-		}
-		else {
-			deri = 1;
-			return v + deri;
-		}
-	}
-
-	if (e) startDragging(e); // chaining event
-}
-*/
 
 function generateMainVR() {
 	var THICKNESS = Config.rulerThickness;
