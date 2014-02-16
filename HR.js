@@ -102,7 +102,7 @@ function addHR(e) {
 		hr.lastY = y;
 
 		// check if deleting HR is in order
-		if ( mainHR.contains(e.target) ) {
+		if ( mainHR.contains(e.target) || mainHR.dom === e.target ) {
 			hr.destroy();
 			HRy.splice(HRy.indexOf(hr.lastY), 1);
 			hr = shim = null;

@@ -228,7 +228,7 @@ function generateMainCR() {
 	var svg = new NATIVE('div');
 	svg.style({
 		'boxSizing': 'border-box',
-		'position': 'absolute',
+		'position': 'fixed',
 		'top': 0,
 		'left': 0,
 		'width': Config.rulerThickness + 'px',

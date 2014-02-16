@@ -91,7 +91,7 @@ function addVR(e) {
 		vr.lastX = x;
 
 		// delete VR
-		if ( mainVR.contains(e.target) ) {
+		if ( mainVR.contains(e.target) || mainVR.dom === e.target ) {
 			vr.destroy();
 			VRx.splice(VRx.indexOf(vr.lastX), 1);
 			vr = shim = null;
