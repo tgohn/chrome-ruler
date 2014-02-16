@@ -7,57 +7,34 @@ function SVG(tagName) {
 		this.dom  = document.createElementNS(SVG_NS, tagName);
 }
 
-function NATIVE(tagName) {
-	this.dom = document.createElement(tagName);
+SVG.prototype.setAttributes = function(attrs) {
+	for (var name in attrs) {
+		this.setAttribute(name, attrs[name]);
+	}
+
+	return this;
 }
-NATIVE.prototype = new SVG();
-NATIVE.prototype.constructor = NATIVE;
 
-SVG.prototype.attr = function(name, content) {
-	if (typeof name == 'object')
-		return this.applyTemplate(name);
-
-	if (content == undefined)
-		return this.dom.getAttribute(name);
-
+SVG.prototype.setAttribute = function(name, content) {
 	this.dom.setAttribute(name, content);
 	return this;
-};
+}
 
-SVG.prototype.rAttr = function(name) {
+SVG.prototype.removeAttribute = function(name) {
 	this.dom.removeAttribute(name);
 	return this;
 }
 
-SVG.prototype.applyTemplate = function(template) {
-	for (var name in template) {
-		if (name == 'style')
-			this.style(template[name]);
-		else if (/^\$/.test(name)) {  // append Child
-			var child_temp = {};
-			child_temp[name] = template[name];
-			this.appendTemplate(child_temp);
-		}
-		else
-			this.attr(name, template[name]);
-	}
-	return this;
-}
-/*
-SVG.prototype.hasChildren = function(el) {
-	if (el instanceof SVG)
-		el = el.dom;
-	var dom = this.dom;
+SVG.prototype.appendChildren = function(children) {
+	var self = this;
 
-	do {
-		if (el === dom)
-			return true
-	}
-	while (el = el.parentNode);
+	children.forEach(function(child) {
+		self.append(child);
+	});
 
-	return false;
+	return self;
 }
-*/
+
 SVG.prototype.contains = function(el) {
 	var self = this.dom;
 	return self !== el && (self.contains ? self.contains(el) : true);
@@ -77,7 +54,7 @@ SVG.prototype.appendTemplate = function(template) {
 		// remove '_' and anything after that
 		if (! /^\$/.test(name))
 			throw ('invalid tagName: ' + name);
-			
+
 		elm = new this.constructor(name.replace(/^\$|_.*$/g,''));
 		elm.applyTemplate(template[name]);
 		elm.appendTo(this);
@@ -145,7 +122,6 @@ SVG.prototype.setTextContent = function(value) {
 	this.textNode = textNode;
 
 	return this;
-
 }
 
 SVG.prototype.detach = function() {
@@ -167,3 +143,9 @@ SVG.prototype.on = function(type, callback) {
 SVG.prototype.un = function(type, callback) {
 	this.dom.removeEventListener(type, callback);
 }
+
+function NATIVE(tagName) {
+	this.dom = document.createElement(tagName);
+}
+NATIVE.prototype = new SVG();
+NATIVE.prototype.constructor = NATIVE;

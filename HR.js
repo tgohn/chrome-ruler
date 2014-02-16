@@ -38,13 +38,10 @@ function addHR(e) {
 		return;
 	}
 
-	var svg =  new SVG('svg'),
+	var hr =  new NATIVE('div'),
 		shim = generateShim();
 
-	svg.attr({
-		viewBox: _(0, 0, 5, Config.grid_padding*2 + Config.grid_thickness),
-		preserveAspectRatio: 'none',
-		style  : {
+	hr.style({
 			'position': 'absolute',
 			'min-width' : '100%',
 			'height'   : Config.grid_padding*2 + Config.grid_thickness + 'px',
@@ -53,25 +50,28 @@ function addHR(e) {
 			'z-index' : '10001',
 			'width'  : pageDimension().width+'px',
 			'top'    : e.pageY - Config.grid_padding  + 'px'
-		}
-	}).append({
-		'$rect' : {
-			y: Config.grid_padding,
-			x: 0,
-			width: 5,
-			height: 1,
-			fill: Config.grid_color
-		}
-	}).appendTo(docBody);
+	});
+	hr.append(
+		new NATIVE('div').style({
+			'position': 'absolute',
+			'top': Config.grid_padding + 'px',
+			'left': 0,
+			'width': '100%',
+			'height': '1px',
+			'backgroundColor': Config.grid_color
+		})
+	);
+	hr.appendTo(docBody);
 
 	// Start listening to Events
 	var oy, oTop, oCursor;  // o = original
 
-	svg.on('mousedown', startDragging);
+	hr.on('mousedown', startDragging);
+	if (e) startDragging(e);
 
 	function startDragging(e) {
 		oy = e.pageY;
-		oTop = parseInt(svg.style('top'));
+		oTop = parseInt(hr.style('top'));
 		oCursor = docBody.style.cursor;
 
 		shim.appendTo(docBody);
@@ -84,7 +84,7 @@ function addHR(e) {
 	}
 
 	function moveHR(e) {
-		svg.style('top', oTop + (e.pageY - oy) +'px');
+		hr.style('top', oTop + (e.pageY - oy) +'px');
 	}
 
 	function detachHR(e) {
@@ -95,71 +95,59 @@ function addHR(e) {
 
 		// HRy keeps track of available HRs
 		var y = getPosY();
-		if (svg.lastY)
-			HRy.splice(HRy.indexOf(svg.lastY), 1, y); // replace last known y coord with new one
+		if (hr.lastY)
+			HRy.splice(HRy.indexOf(hr.lastY), 1, y); // replace last known y coord with new one
 		else
 			HRy.push(y)
-		svg.lastY = y;
+		hr.lastY = y;
 
 		// check if deleting HR is in order
 		if ( mainHR.contains(e.target) ) {
-			svg.destroy();
-			HRy.splice(HRy.indexOf(svg.lastY), 1);
-			svg = shim = null;
+			hr.destroy();
+			HRy.splice(HRy.indexOf(hr.lastY), 1);
+			hr = shim = null;
 		}
 
 		HRy.doSort();
 	}
 
 	function getPosY() {
-		return (parseInt(svg.style('top')) + Config.grid_padding);
+		return (parseInt(hr.style('top')) + Config.grid_padding);
 	}
-
-	if (e) startDragging(e);
 }
 
 function generateMainHR() {
-	var svg = new SVG('svg');
-		svg.attr({
-			style: {
-				'position': 'fixed',
-				'top' : 0,
-				'left': 0,
-				'zIndex': 999999,
-				'boxShadow': 'rgba(211,211,211,0.5) 0px 0px 5px 2px'},
-			'width': '100%',
-			'height': THICKNESS,
-			'preserveAspectRatio': 'none'
-		});
+	var mainHR = new NATIVE('div');
 
-	svg.append({
-		'$rect_1' : {
-			'width' : 10000,
-			'height': Config.ruler_thickness,
-			'fill'  : 'white',
-			'x'     : 0,
-			'y'     : 0
-		},
-		'$rect_2' : {
-			'width' : 10000,
-			'height': 1,
-			'fill'  : 'black',
-			'x'     : 0,
-			'y'     : THICKNESS - 1
-		}
+	mainHR.style({
+		'boxSizing': 'border-box',
+		'position': 'fixed',
+		'top' : 0,
+		'left': 0,
+		'zIndex': 999999,
+		'width': '100%',
+		'height': THICKNESS + 'px',
+		'boxShadow': 'rgba(211,211,211,0.5) 0px 0px 5px 2px',
+		'overflow': 'hidden',
+		'backgroundColor': 'white',
+		'borderBottom': '1px solid black'
 	});
 
-	var tiny_marks = {}
-	for (var i=0; i<1000; i++) {
-		tiny_marks['$rect_'+i] = {
-			'fill': 'black',
-			'width' : 1,
-			'height': THICKNESS,
-			'x' : i*10,
-			'y' : THICKNESS - (i%5 ? 5 : i%10 ? 8 : THICKNESS)
-		}
-	}
-	svg.append(tiny_marks);
+	var tiny_marks = [];
+	for (var i = 0; i < 1000; i ++) {
+		var mark = new NATIVE('div');
+		mark.style({
+			'position': 'absolute',
+			'backgroundColor': 'black',
+			'width': '1px',
+			'height': Config.rulerThickness + 'px',
+			'left': i*10 + 'px',
+			'top': Config.rulerThickness - (i%5 ? 5 : i%10 ? 8 : THICKNESS) + 'px'
+		});
 
-	return svg;
+		tiny_marks.push(mark);
+	}
+	mainHR.appendChildren(tiny_marks);
+
+	return mainHR;
 }

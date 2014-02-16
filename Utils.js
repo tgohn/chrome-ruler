@@ -13,15 +13,13 @@ function stopEvent(e) {
 
 function generateShim(z) {
 	var shim = new NATIVE('div');
-		shim.attr( {
-			style: {
-				position: 'fixed',
-				top: 0,
-				left: 0,
-				width: '100%',
-				height: '100%',
-				zIndex: z ? z : '999'
-			}
+		shim.style( {
+			position: 'fixed',
+			top: 0,
+			left: 0,
+			width: '100%',
+			height: '100%',
+			zIndex: z ? z : '999'
 		});
 	return shim;
 }
@@ -44,20 +42,6 @@ var Config = {
 	CR_fill:         '#07336E',
 	ruler_color:     '#07336E',
 	ruler_stroke:    'black'
-}
-
-//guestColor();
-function guestColor() {
-	var span = document.getElementsByTagName('span')[0] || document.getElementsByTagName('p')[0] || document.getElementsByTagName('div')[0],
-		style = window.getComputedStyle(span, null);
-
-	if (!style) {
-		// FAIL !!!!!!
-	}
-	else {
-		ruler_color = style.color;
-		ruler_stroke = style.backgroundColor;
-	}	
 }
 
 var VRx = []; HRy = [];
