@@ -23,7 +23,9 @@ mainCR.disable = function() {
 
 	if (mainCR.lastRuler) {    // purge last ruler
 		mainCR.lastRuler.detach();
+		mainCR.lastText.detach();
 		mainCR.lastRuler = null;
+		mainCR.lastText = null;
 	}
 }
 
@@ -45,12 +47,17 @@ function addRulerCanvas(e) {
 
 	var svg  = new SVG('svg'),
 		path = new SVG('path'),
-		text = new SVG('text');
+		text = new NATIVE('div');
 
 	if (mainCR.lastRuler) {    // purge last ruler
 		mainCR.lastRuler.detach();
 	}
 	mainCR.lastRuler = svg;
+
+	if (mainCR.lastText) {    // purge last ruler
+		mainCR.lastText.detach();
+	}
+	mainCR.lastText = text;
 
 	svg.style({
 		'position': 'absolute',
@@ -63,9 +70,15 @@ function addRulerCanvas(e) {
 		'zIndex'  : 10003
 	});
 
-	text.setAttributes({
-		'font-size': '20px',
-		'fill' : 'black',
+	text.style({
+		'position': 'absolute',
+		'zIndex'  : '10005',
+		'fontSize': '24px',
+		'background-color': 'white',
+		'color': '#555',
+		'padding': '3px 8px',
+		'boxShadow': '0 2px 3px 1px rgba(0,0,0,0.3)',
+		'-webkit-transform': 'translateY(-100%) translateX(20px)'
 	});
 
 	path.setAttributes({
@@ -73,8 +86,9 @@ function addRulerCanvas(e) {
 		'fill' : Config.ruler_color
 	});
 
-	svg.appendChildren([path, text]);
+	path.appendTo(svg);
 	svg.appendTo(docBody);
+	text.appendTo(docBody);
 
 	docBody.addEventListener('mousemove', moveRuler);
 	docBody.addEventListener('mouseup', detachRuler);
@@ -107,10 +121,9 @@ function addRulerCanvas(e) {
 			.setTextContent(
 				Math.round(Math.sqrt( Math.pow(relX,2) + Math.pow(relY, 2) )*1000)/1000 + 'px'
 			)
-			.setAttributes({
-				'x': ox + relX/2,
-				'y': oy + relY/2,
-				'text-anchor': relX*relY == 0 ? 'middle' : dx*dy > 0 ?  'start' : 'end'
+			.style({
+				'left': x + 'px',
+				'top': y + 'px',
 			});
 	}
 
