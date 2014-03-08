@@ -15,5 +15,15 @@
   "bugs": {
     "url": "https://github.com/tgohn/chrome-ruler/issues"
   },
-  "homepage": "https://github.com/tgohn/chrome-ruler"
+  "homepage": "https://github.com/tgohn/chrome-ruler",
+  "devDependencies": {
+    "grunt": "~0.4.3",
+    "browserify": "~3.32.0",
+    "reactify": "~0.9.1"
+  },
+  "dependencies": {
+    "backbone": "~1.1.2",
+    "envify": "~1.2.1",
+    "react": "~0.9.0"
+  }
 }
