@@ -2,7 +2,7 @@ module.exports = function(grunt) {
 	grunt.initConfig({
 		watch: {
 			'chrome-ruler': {
-				files: ['src/chrome-ruler.js'],
+				files: ['src/chrome-ruler.js', 'src/chrome-ruler/**/*.{js.jsx}'],
 				tasks: ['exec:chrome-ruler'],
 				options: {
 					interupt: true,
@@ -12,7 +12,7 @@ module.exports = function(grunt) {
 		},
 		exec: {
 			'chrome-ruler': {
-				cmd: 'echo 1',
+				cmd: 'browserify -d -t reactify -e ./src/chrome-ruler.js -o ./dist/chrome-ruler.js',
 				stdout: true,
 				stderr: true
 			}
