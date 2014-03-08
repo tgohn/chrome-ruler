@@ -19,7 +19,9 @@
   "devDependencies": {
     "grunt": "~0.4.3",
     "browserify": "~3.32.0",
-    "reactify": "~0.9.1"
+    "reactify": "~0.9.1",
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt-exec": "~0.4.5"
   },
   "dependencies": {
     "backbone": "~1.1.2",
