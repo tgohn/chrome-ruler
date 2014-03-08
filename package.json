@@ -1,0 +1,19 @@
+{
+  "name": "chrome-ruler",
+  "version": "0.0.0",
+  "description": "A ruler extension for Chrome",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/tgohn/chrome-ruler.git"
+  },
+  "author": "John Nguyen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tgohn/chrome-ruler/issues"
+  },
+  "homepage": "https://github.com/tgohn/chrome-ruler"
+}
