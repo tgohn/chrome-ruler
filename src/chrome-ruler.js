@@ -1,7 +1,6 @@
-/** @jsx React.DOM */
+var Config = require('./chrome-ruler/Config');
 var React = require('react');
 
-React.renderComponent(
-  <h1>Hello, world!</h1>,
-	document.body
-);
+var HorizontalRuler = require('./chrome-ruler/HorizontalRuler');
+
+React.renderComponent(new HorizontalRuler(), document.body);
