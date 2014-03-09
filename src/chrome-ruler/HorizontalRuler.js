@@ -24,27 +24,7 @@ var HorizontalRuler = React.createClass({
 		}
 
 		// rendering ticks
-		var ticks = [];
-		var thickness = Config.rulerThickness;
-		var top;
-
-		for (var i = 0; i < 1000; i++) {
-			switch (i % 10) {
-				case 0:
-					// if 10th tick
-					top = 0; break;
-				case 5:
-					// if 5th tick
-					top = Math.round(thickness / 2); break;
-				default:
-					// if normal tick
-					top = Math.round(thickness * 3 / 4);
-			}
-
-			ticks.push(
-				<HorizontalRulerTick left={ i* 10 } top={ top } />
-			);
-		}
+		var ticks = generateHorizontalRulerTicks(1000);
 
 		return (
 			<div style={ style }>
@@ -54,5 +34,32 @@ var HorizontalRuler = React.createClass({
 	}
 
 });
+
+function generateHorizontalRulerTicks(max) {
+	// return a array of max-number HorizontalRulerTick
+	var ticks = [];
+	var thickness = Config.rulerThickness;
+	var top;
+
+	for (var i = 0; i < max; i++) {
+		switch (i % 10) {
+			case 0:
+				// if 10th tick
+				top = 0; break;
+			case 5:
+				// if 5th tick
+				top = Math.round(thickness / 2); break;
+			default:
+				// if normal tick
+				top = Math.round(thickness * 3 / 4);
+		}
+
+		ticks.push(
+			<HorizontalRulerTick left={ i* 10 } top={ top } />
+		);
+	}
+
+	return ticks;
+}
 
 module.exports = HorizontalRuler;
