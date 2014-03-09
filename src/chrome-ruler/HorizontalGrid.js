@@ -3,6 +3,7 @@
 var React = require('react');
 var Config = require('./Config');
 var Utils = require('./Utils');
+var Shim = require('./Shim');
 
 
 var HorizontalGrid = React.createClass({
@@ -21,7 +22,7 @@ var HorizontalGrid = React.createClass({
 			'left': '0',
 			'top': this.state.top - Config.gridPadding,
 			'cursor': 'row-resize',
-			'z-index': Config.zIndex + 1
+			'z-index': Config.zIndex + 10
 		};
 
 		var highlightStyle = {
@@ -44,27 +45,31 @@ var HorizontalGrid = React.createClass({
 
 function startDragging(e) {
 	var self = this;
+	var docBody = document.body;
+
 	self.dragging = self.dragging || {};
-	self.dragging.oY = e.pageY;
-	self.dragging.oTop = self.state.top;
-	self.dragging.oCursor = document.body.style.cursor;
 
 	// trigger shim;
+	var shimContainer = document.createElement('div');
+	var shim = React.renderComponent(Shim(), shimContainer);
+	docBody.appendChild(shimContainer);
+	shimContainer.style.cursor = 'row-resize';
 
-	document.body.style.cursor = 'row-resize';
-	document.body.addEventListener('mousemove', move);
-	document.body.addEventListener('mouseup', stop);
+	docBody.addEventListener('mousemove', move);
+	docBody.addEventListener('mouseup', stop);
 
 	function move(e) {
 		self.setState({
-			'top': self.dragging.oTop + (e.pageY - self.dragging.oY)
+			'top': e.pageY
 		});
 	}
 
 	function stop(e) {
-		document.body.style.cursor = self.dragging.oCursor;
-		document.body.removeEventListener('mousemove', move);
-		document.body.removeEventListener('mouseup', stop);
+		docBody.removeEventListener('mousemove', move);
+		docBody.removeEventListener('mouseup', stop);
+
+		React.unmountComponentAtNode(shimContainer);
+		docBody.removeChild(shimContainer);
 	}
 }
 
