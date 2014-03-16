@@ -7,14 +7,14 @@ window.React = React;
 
 var HorizontalRuler = require('./chrome-ruler/HorizontalRuler');
 var HorizontalGrid = require('./chrome-ruler/HorizontalGrid');
+var MainHR = require('./chrome-ruler/MainHR');
 
 var main = document.createElement('div');
 document.body.appendChild(main);
 
 window.main = React.renderComponent(
 	<div>
-		<HorizontalRuler />
-		<HorizontalGrid />
+		<MainHR />
 	</div>,
 	main
 );

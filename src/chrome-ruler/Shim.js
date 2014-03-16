@@ -11,11 +11,12 @@ var Shim = React.createClass({
 			left: 0,
 			width: '100%',
 			height: '100%',
+			display: this.props.display || '',
 			zIndex: Config.zIndex - 1
 		};
 
 		return (
-			<div style={ style} />
+			<div style={ style } />
 		);
 	}
 });

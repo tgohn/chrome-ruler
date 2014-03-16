@@ -21,12 +21,12 @@ var HorizontalRuler = React.createClass({
 			'backgroundColor': Config.rulerBackgroundColor,
 			'borderBottom': '1px solid',
 			'borderColor' : Config.rulerStrokeColor
-		}
+		};
 
 		// rendering ticks
 		var ticks = generateHorizontalRulerTicks(1000);
 
-		return (
+		return this.transferPropsTo(
 			<div style={ style }>
 				{ ticks }
 			</div>

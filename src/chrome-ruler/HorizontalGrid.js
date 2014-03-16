@@ -10,7 +10,7 @@ var HorizontalGrid = React.createClass({
 	getInitialState: function() {
 		return {
 			top: 100
-		}
+		};
 	},
 
 	render: function() {
@@ -20,7 +20,7 @@ var HorizontalGrid = React.createClass({
 			'width': Utils.getPageDimension().width,
 			'height': Config.gridPadding*2 + Config.gridThickness,
 			'left': '0',
-			'top': this.state.top - Config.gridPadding,
+			'top': this.props.top - Config.gridPadding,
 			'cursor': 'row-resize',
 			'z-index': Config.zIndex + 10
 		};
@@ -32,10 +32,10 @@ var HorizontalGrid = React.createClass({
 			'width': '100%',
 			'height': Config.gridThickness,
 			'backgroundColor': Config.gridBackgroundColor
-		}
+		};
 
 		return (
-			<div style={ outerDivStyle } onMouseDown={ startDragging.bind(this) }>
+			<div style={ outerDivStyle } onMouseDown={ this.props.dragGrid }>
 				<div style={ highlightStyle } />
 			</div>
 		);
