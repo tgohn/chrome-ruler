@@ -4,6 +4,8 @@ var React = require('react');
 var Config = require('./Config');
 var Utils = require('./Utils');
 var Shim = require('./Shim');
+var DraggingEvent = require('./DraggingEvent');
+var GridsData = require('./GridsData');
 
 
 var HorizontalGrid = React.createClass({
@@ -13,6 +15,15 @@ var HorizontalGrid = React.createClass({
 		};
 	},
 
+	componentDidMount: function() {
+		var key = this.props.key;
+		this.data = GridsData.horizontalGrids[key];
+
+		if (this.data.data.dragging) {
+			startDragging.bind(this, this.data.data.dragging)();
+		}
+	},
+
 	render: function() {
 		var outerDivStyle = {
 			'position': 'absolute',
@@ -20,7 +31,7 @@ var HorizontalGrid = React.createClass({
 			'width': Utils.getPageDimension().width,
 			'height': Config.gridPadding*2 + Config.gridThickness,
 			'left': '0',
-			'top': this.props.top - Config.gridPadding,
+			'top': this.state.top - Config.gridPadding,
 			'cursor': 'row-resize',
 			'z-index': Config.zIndex + 10
 		};
@@ -35,26 +46,21 @@ var HorizontalGrid = React.createClass({
 		};
 
 		return (
-			<div style={ outerDivStyle } onMouseDown={ this.props.dragGrid }>
+			<div style={ outerDivStyle } onMouseDown={ startDragging.bind(this) }>
 				<div style={ highlightStyle } />
 			</div>
 		);
 	}
 });
 
-
 function startDragging(e) {
 	var self = this;
 	var docBody = document.body;
+	var data = this.data;
 
-	self.dragging = self.dragging || {};
+	DraggingEvent.emit('dragging', true, 'row-resize');
 
-	// trigger shim;
-	var shimContainer = document.createElement('div');
-	var shim = React.renderComponent(Shim(), shimContainer);
-	docBody.appendChild(shimContainer);
-	shimContainer.style.cursor = 'row-resize';
-
+	// attach event to global
 	docBody.addEventListener('mousemove', move);
 	docBody.addEventListener('mouseup', stop);
 
@@ -65,11 +71,12 @@ function startDragging(e) {
 	}
 
 	function stop(e) {
+		// remove events from global
 		docBody.removeEventListener('mousemove', move);
 		docBody.removeEventListener('mouseup', stop);
 
-		React.unmountComponentAtNode(shimContainer);
-		docBody.removeChild(shimContainer);
+		DraggingEvent.emit('dragging', false, 'row-resize');
+		data.data.dragging = null;
 	}
 }
 

@@ -1,6 +1,6 @@
 var data = {
-	horizontalGrids: [],
-	verticalGrids: []
+	horizontalGrids: {},
+	verticalGrids: {}
 };
 
 module.exports = data;

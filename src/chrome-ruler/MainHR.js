@@ -6,6 +6,7 @@ var HorizontalRuler = require('./HorizontalRuler');
 var Shim = require('./Shim');
 var GridsData = require('./GridsData');
 var lodash = require('lodash');
+var EventEmitter = require('events').EventEmitter;
 
 var MainHR = React.createClass({
 	getInitialState: function() {
@@ -27,8 +28,7 @@ var MainHR = React.createClass({
 	onRulerMouseLeave: function(e) {
 		this.setState({
 			rulerMouseDown: false,
-			dragginGrid: true,
-			creatingGrid: lodash.clone(e)
+			creatingGrid: this.state.rulerMouseDown ? lodash.clone(e) : false
 		});
 	},
 
@@ -39,7 +39,12 @@ var MainHR = React.createClass({
 	render: function() {
 		if (this.state.creatingGrid) {
 			var grid = addGrid(this.state.creatingGrid);
+			var newGridId = grid.data.id;
 		}
+
+		var grids = lodash.map(GridsData.horizontalGrids, function(grid) {
+			return <HorizontalGrid key={ grid.data.id } />
+		});
 
 		return (
 			<div>
@@ -47,11 +52,8 @@ var MainHR = React.createClass({
 					onMouseUp={ this.onRulerMouseUp }
 					onMouseLeave={ this.onRulerMouseLeave }/>
 					{
-						GridsData.horizontalGrids.map(function(data) {
-							return <HorizontalGrid key={ data.id } top={ data.top } />
-						})
+						grids
 					}
-				<Shim display={ this.state.draggingGrid ? '' : 'none' } />
 			</div>
 		)
 	}
@@ -59,11 +61,15 @@ var MainHR = React.createClass({
 
 
 function addGrid(e) {
-	var grid = {
-		id: 'horizontal-grid-' + Date.now(),
-		top: e.pageY
+	var id = 'horizontal-grid-' + Date.now();
+	var grid =  new EventEmitter();
+	grid.data = {
+		id: id,
+		top: e.pageY,
+		dragging: e
 	};
-	GridsData.horizontalGrids.push(grid);
+
+	GridsData.horizontalGrids[id] = grid;
 
 	return grid;
 }
