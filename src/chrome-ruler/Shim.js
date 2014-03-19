@@ -2,7 +2,7 @@
 
 var Config = require('./Config');
 var React = require('react');
-var DraggingEvent = require('./DraggingEvent');
+var Data = require('./Data');
 
 var Shim = React.createClass({
 	getInitialState: function() {
@@ -10,7 +10,7 @@ var Shim = React.createClass({
 	},
 
 	componentWillMount: function() {
-		DraggingEvent.on('dragging', this.onDragging);
+		Data.dragging.on('change', this.onDragging);
 	},
 
 	onDragging: function(val, cursor) {

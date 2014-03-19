@@ -4,8 +4,7 @@ var React = require('react');
 var Config = require('./Config');
 var Utils = require('./Utils');
 var Shim = require('./Shim');
-var DraggingEvent = require('./DraggingEvent');
-var GridsData = require('./GridsData');
+var Data = require('./Data');
 
 
 var HorizontalGrid = React.createClass({
@@ -17,7 +16,7 @@ var HorizontalGrid = React.createClass({
 
 	componentDidMount: function() {
 		var key = this.props.key;
-		this.data = GridsData.horizontalGrids[key];
+		this.data = Data.horizontalGrids[key];
 
 		if (this.data.data.dragging) {
 			startDragging.bind(this, this.data.data.dragging)();
@@ -58,7 +57,7 @@ function startDragging(e) {
 	var docBody = document.body;
 	var data = this.data;
 
-	DraggingEvent.emit('dragging', true, 'row-resize');
+	Data.dragging.emit('change', true, 'row-resize');
 
 	// attach event to global
 	docBody.addEventListener('mousemove', move);
@@ -75,7 +74,7 @@ function startDragging(e) {
 		docBody.removeEventListener('mousemove', move);
 		docBody.removeEventListener('mouseup', stop);
 
-		DraggingEvent.emit('dragging', false, 'row-resize');
+		Data.dragging.emit('change', false, 'row-resize');
 		data.data.dragging = null;
 	}
 }

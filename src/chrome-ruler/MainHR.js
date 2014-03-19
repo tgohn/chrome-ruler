@@ -4,7 +4,7 @@ var React = require('react');
 var HorizontalGrid = require('./HorizontalGrid');
 var HorizontalRuler = require('./HorizontalRuler');
 var Shim = require('./Shim');
-var GridsData = require('./GridsData');
+var Data = require('./Data');
 var lodash = require('lodash');
 var EventEmitter = require('events').EventEmitter;
 
@@ -42,7 +42,7 @@ var MainHR = React.createClass({
 			var newGridId = grid.data.id;
 		}
 
-		var grids = lodash.map(GridsData.horizontalGrids, function(grid) {
+		var grids = lodash.map(Data.horizontalGrids, function(grid) {
 			return <HorizontalGrid key={ grid.data.id } />
 		});
 
@@ -69,7 +69,7 @@ function addGrid(e) {
 		dragging: e
 	};
 
-	GridsData.horizontalGrids[id] = grid;
+	Data.horizontalGrids[id] = grid;
 
 	return grid;
 }
