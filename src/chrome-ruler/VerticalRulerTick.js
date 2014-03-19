@@ -3,16 +3,16 @@
 var React = require('react');
 var Config = require('./Config');
 
-var HorizontalRulerTick = React.createClass({
+var VerticalRulerTick = React.createClass({
 	render: function() {
 		var style = {
 			'position': 'absolute',
 			'backgroundColor': Config.rulerStrokeColor,
-			'width': '1px',
-			'height': Config.rulerThickness,
+			'height': '1px',
+			'width': Config.rulerThickness,
 			'left': this.props.left,
 			'top': this.props.top
-		};
+		}
 
 		return (
 			<div style={ style } />
@@ -20,4 +20,4 @@ var HorizontalRulerTick = React.createClass({
 	}
 });
 
-module.exports = HorizontalRulerTick;
+module.exports = VerticalRulerTick;

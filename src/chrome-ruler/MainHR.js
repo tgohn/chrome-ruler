@@ -3,7 +3,6 @@
 var React = require('react');
 var HorizontalGrid = require('./HorizontalGrid');
 var HorizontalRuler = require('./HorizontalRuler');
-var Shim = require('./Shim');
 var Data = require('./Data');
 var lodash = require('lodash');
 var EventEmitter = require('events').EventEmitter;
