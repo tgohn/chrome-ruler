@@ -11,7 +11,7 @@ var MainHR = React.createClass({
 	getInitialState: function() {
 		return {
 			rulerMouseDown: false,
-			creatungGrid: false
+			creatingGrid: false
 		};
 	},
 
@@ -49,10 +49,8 @@ var MainHR = React.createClass({
 			<div>
 				<HorizontalRuler onMouseDown={ this.onRulerMouseDown }
 					onMouseUp={ this.onRulerMouseUp }
-					onMouseLeave={ this.onRulerMouseLeave }/>
-					{
-						grids
-					}
+					onMouseLeave={ this.onRulerMouseLeave } />
+				{ grids }
 			</div>
 		)
 	}
