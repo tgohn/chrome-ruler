@@ -14,15 +14,13 @@ var CentralRuler = React.createClass({
 			'height': Config.rulerThickness,
 			'borderRight': '1px solid ' + Config.rulerStrokeColor,
 			'borderBottom': '1px solid ' + Config.rulerStrokeColor,
-			'backgroundColor': Config.rulerBackgroundColor,
+			'backgroundColor': this.props.active ? Config.rulerBackgroundColorActive : Config.rulerBackgroundColor,
 			'zIndex' : Config.zIndex,
 			'cursor': 'pointer'
 		};
 
-
-		return (
-			<div style={ style }>
-			</div>
+		return this.transferPropsTo(
+			<div style={ style } />
 		);
 	}
 });

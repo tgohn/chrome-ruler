@@ -1,6 +1,7 @@
 module.exports = {
 	rulerThickness: 15,
 	rulerBackgroundColor: 'white',
+	rulerBackgroundColorActive: '#07336E',
 	rulerStrokeColor: 'black',
 
 	gridPadding: 8,
@@ -11,4 +12,4 @@ module.exports = {
 	tapeBackgroundColor: '#22F5F5',
 
 	zIndex: 99999
-}
+};
