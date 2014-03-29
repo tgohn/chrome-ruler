@@ -2,6 +2,7 @@
 
 var React = require('react');
 var CentralRuler = require('./CentralRuler');
+var RulerCanvas = require('./RulerCanvas');
 
 var MainCR = React.createClass({
 	getInitialState: function() {
@@ -16,7 +17,10 @@ var MainCR = React.createClass({
 
 	render: function() {
 		return (
-			<CentralRuler onClick={ this.onCRClick } active={ this.state.isActive } />
+			<div>
+				<CentralRuler onClick={ this.onCRClick } active={ this.state.isActive } />
+				<RulerCanvas />
+			</div>
 		)
 	}
 });
