@@ -60,7 +60,8 @@ var FreeRuler = React.createClass({
 			'position': 'absolute',
 			'zIndex': Config.zIndex - 1 ,
 			'top': 0,
-			'left': 0
+			'left': 0,
+			'display': this.props.active ? 'block' : 'none'
 		};
 
 		var canvas_style = {

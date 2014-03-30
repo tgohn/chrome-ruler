@@ -19,7 +19,7 @@ var MainCR = React.createClass({
 		return (
 			<div>
 				<CentralRuler onClick={ this.onCRClick } active={ this.state.isActive } />
-				<RulerCanvas />
+				<RulerCanvas active={ this.state.isActive } />
 			</div>
 		)
 	}
