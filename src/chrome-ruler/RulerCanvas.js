@@ -2,7 +2,7 @@
 
 var React = require('react');
 var Path = require('./rulerCanvas/Path');
-
+var Text = require('./rulerCanvas/Text');
 
 var FreeRuler = React.createClass({
 	render: function() {
@@ -17,12 +17,22 @@ var FreeRuler = React.createClass({
 			'zIndex'  : 10003
 		};
 
+		var start = {
+			x: 100,
+			y: 100
+		};
+
+		var end = {
+			x: 200,
+			y: 200
+		};
+
 		return (
 			<div>
 				<svg style={ canvas_style }>
-					<Path start={ {x: 100, y:100} }
-							end={ {x: 200, y: 200} } />
+					<Path start={ start } end={ end } />
 				</svg>
+				<Text start={ start } end={ end } />
 			</div>
 		)
 	}
