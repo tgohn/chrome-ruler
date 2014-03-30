@@ -8,7 +8,7 @@ var Config = require('./Config');
 var Data = require('./Data');
 var lodash = require('lodash');
 
-var FreeRuler = React.createClass({
+var RulerCanvas = React.createClass({
 	getInitialState: function() {
 		return {
 			mouseDown: false,
@@ -145,4 +145,4 @@ function getSnapY(check) {
 	return snap || check;
 }
 
-module.exports = FreeRuler;
+module.exports = RulerCanvas;
