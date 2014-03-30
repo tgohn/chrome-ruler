@@ -11,5 +11,7 @@ module.exports = {
 	tapeActiveColor: '#07336E',
 	tapeBackgroundColor: '#22F5F5',
 
+	proximity: 8,
+
 	zIndex: 99999
 };

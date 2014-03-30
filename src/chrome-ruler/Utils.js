@@ -5,5 +5,5 @@ module.exports.getPageDimension = function() {
 	return {
 		height: Math.max(docBody.scrollHeight, docElem.scrollHeight),
 		width: Math.max(docBody.scrollWidth, docElem.scrollWidth)
-	}
-}
+	};
+};

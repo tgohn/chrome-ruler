@@ -10,7 +10,6 @@ var Text = React.createClass({
 
 		var style = {
 			'position': 'absolute',
-			'zIndex'  : '10005',
 			'fontSize': '18px',
 			'fontFamily': 'monospace',
 			'fontWeight': '700',
@@ -19,6 +18,8 @@ var Text = React.createClass({
 			'padding': '0.2em 0.4em',
 			'boxShadow': '0 2px 3px 1px rgba(0,0,0,0.3)',
 			'WebkitTransform': 'translateY(-100%) translateX(20px)',
+			'whiteSpace': 'nowrap',
+			'pointerEvent': 'none',
 			'left': pos.x,
 			'top': pos.y
 		};
