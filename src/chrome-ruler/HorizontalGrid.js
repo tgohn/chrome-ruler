@@ -65,6 +65,8 @@ function startDragging(e) {
 	function move(e) {
 		self.setState({
 			'top': e.pageY
+		}, function() {
+			data.data.top = e.pageY;
 		});
 	}
 

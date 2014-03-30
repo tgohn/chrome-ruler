@@ -65,6 +65,8 @@ function startDragging(e) {
 	function move(e) {
 		self.setState({
 			'left': e.pageX
+		}, function() {
+			data.data.left = e.pageX;
 		});
 	}
 
