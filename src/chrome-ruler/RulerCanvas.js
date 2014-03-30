@@ -16,6 +16,8 @@ var FreeRuler = React.createClass({
 	},
 
 	onMouseDown: function(e) {
+		e.preventDefault();
+
 		this.setState({
 			mouseDown: true,
 			start: e.ctrlKey ?
