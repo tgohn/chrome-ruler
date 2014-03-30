@@ -54,6 +54,20 @@ var FreeRuler = React.createClass({
 		this.setState({mouseDown: false});
 	},
 
+	clear: function() {
+		this.setState({
+			mouseDown: false,
+			start: undefined,
+			end: undefined
+		});
+	},
+
+	componentDidUpdate: function(prev_props) {
+		// clear ruler if become inactive
+		if (!prev_props.active)
+			this.clear();
+	},
+
 	render: function() {
 		var path, text;
 		var page_dimension = Utils.getPageDimension();

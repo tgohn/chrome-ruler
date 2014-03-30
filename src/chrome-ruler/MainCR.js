@@ -11,6 +11,17 @@ var MainCR = React.createClass({
 		};
 	},
 
+	componentDidMount: function() {
+		// add ESC key listener to disable isActive
+		var self = this;
+
+		document.addEventListener('keyup', function(e) {
+			if (e.keyCode !== 27) return;
+
+			self.setState({ isActive: false });
+		});
+	},
+
 	onCRClick: function() {
 		this.setState({ isActive: !this.state.isActive });
 	},
