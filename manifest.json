@@ -23,7 +23,7 @@
 	],
 
 	"background": {
-		"scripts": ["./chrome/background.js"],
+		"scripts": ["./src/chrome/background.js"],
 		"persistent": false
 	}
 }
