@@ -13,7 +13,7 @@ var VerticalRuler = React.createClass({
 			'position': 'fixed',
 			'top' : 0,
 			'left': 0,
-			'zIndex': Config.zIndex,
+			'zIndex': Config.zIndex + 1,
 			'height': '100%',
 			'width': Config.rulerThickness,
 			'boxShadow': 'rgba(211,211,211,0.5) 0px 0px 5px 2px',

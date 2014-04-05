@@ -13,5 +13,5 @@ module.exports = {
 
 	proximity: 8,
 
-	zIndex: 99999
+	zIndex: 999999999
 };

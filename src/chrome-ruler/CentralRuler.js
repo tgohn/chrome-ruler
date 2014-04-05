@@ -15,7 +15,7 @@ var CentralRuler = React.createClass({
 			'borderRight': '1px solid ' + Config.rulerStrokeColor,
 			'borderBottom': '1px solid ' + Config.rulerStrokeColor,
 			'backgroundColor': this.props.active ? Config.rulerBackgroundColorActive : Config.rulerBackgroundColor,
-			'zIndex' : Config.zIndex,
+			'zIndex' : Config.zIndex + 1,
 			'cursor': 'pointer'
 		};
 

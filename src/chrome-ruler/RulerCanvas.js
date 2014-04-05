@@ -82,8 +82,8 @@ var RulerCanvas = React.createClass({
 
 		var canvas_style = {
 			'position': 'absolute',
-			'min-height' : '100%',
-			'min-width'  : '100%',
+			'minHeight' : '100%',
+			'minWidth'  : '100%',
 			'width'   : page_dimension.width,
 			'height'  : page_dimension.height,
 			'left'    : 0,

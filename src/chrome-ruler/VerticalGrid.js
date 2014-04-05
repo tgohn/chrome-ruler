@@ -31,7 +31,7 @@ var VerticalGrid = React.createClass({
 			'top': '0',
 			'left': this.state.left - Config.gridPadding,
 			'cursor': 'col-resize',
-			'z-index': Config.zIndex + 10
+			'zIndex': Config.zIndex
 		};
 
 		var highlightStyle = {

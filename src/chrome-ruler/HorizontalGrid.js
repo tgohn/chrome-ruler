@@ -31,7 +31,7 @@ var HorizontalGrid = React.createClass({
 			'left': '0',
 			'top': this.state.top - Config.gridPadding,
 			'cursor': 'row-resize',
-			'z-index': Config.zIndex + 10
+			'zIndex': Config.zIndex
 		};
 
 		var highlightStyle = {
