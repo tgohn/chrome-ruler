@@ -24,11 +24,22 @@ var MainHR = React.createClass({
 		this.setState({rulerMouseDown: false});
 	},
 
+	onRulerMouseEnter: function() {
+		this.setState({rulerMouseEntered: true});
+	},
+
 	onRulerMouseLeave: function(e) {
 		this.setState({
+			rulerMouseEntered: false,
 			rulerMouseDown: false,
 			creatingGrid: this.state.rulerMouseDown ? lodash.clone(e) : false
 		});
+	},
+
+	onGridStop: function(gridId) {
+		if (!this.state.rulerMouseEntered) return;
+		delete Data.horizontalGrids[gridId];
+		this.render();
 	},
 
 	componentDidUpdate: function() {
@@ -41,15 +52,20 @@ var MainHR = React.createClass({
 			var newGridId = grid.data.id;
 		}
 
-		var grids = lodash.map(Data.horizontalGrids, function(grid) {
-			return <HorizontalGrid key={ grid.data.id } />
-		});
+		var grids = lodash.map(Data.horizontalGrids, (function(grid) {
+			return (
+				<HorizontalGrid key={ grid.data.id } onStop={ this.onGridStop }
+						start={ grid.data.id == newGridId ? true : false } />
+			)
+		}).bind(this));
 
 		return (
 			<div>
-				<HorizontalRuler onMouseDown={ this.onRulerMouseDown }
-					onMouseUp={ this.onRulerMouseUp }
-					onMouseLeave={ this.onRulerMouseLeave } />
+				<HorizontalRuler
+						onMouseDown={ this.onRulerMouseDown }
+						onMouseUp={ this.onRulerMouseUp }
+						onMouseEnter={ this.onRulerMouseEnter }
+						onMouseLeave={ this.onRulerMouseLeave } />
 				{ grids }
 			</div>
 		)
@@ -62,8 +78,7 @@ function addGrid(e) {
 	var grid =  new EventEmitter();
 	grid.data = {
 		id: id,
-		top: e.pageY,
-		dragging: e
+		top: e.pageY
 	};
 
 	Data.horizontalGrids[id] = grid;
