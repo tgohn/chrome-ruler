@@ -43,6 +43,7 @@ var MainHR = React.createClass({
 	},
 
 	componentDidUpdate: function() {
+		// only create one grid at a go
 		this.state.creatingGrid && this.setState({creatingGrid: false});
 	},
 
@@ -55,17 +56,17 @@ var MainHR = React.createClass({
 		var grids = lodash.map(Data.horizontalGrids, (function(grid) {
 			return (
 				<HorizontalGrid key={ grid.data.id } onStop={ this.onGridStop }
-						start={ grid.data.id == newGridId ? true : false } />
+						start={ grid.data.id == newGridId } />
 			)
 		}).bind(this));
 
 		return (
 			<div>
 				<HorizontalRuler
-						onMouseDown={ this.onRulerMouseDown }
-						onMouseUp={ this.onRulerMouseUp }
-						onMouseEnter={ this.onRulerMouseEnter }
-						onMouseLeave={ this.onRulerMouseLeave } />
+						onMouseDown  = { this.onRulerMouseDown }
+						onMouseUp    = { this.onRulerMouseUp }
+						onMouseEnter = { this.onRulerMouseEnter }
+						onMouseLeave = { this.onRulerMouseLeave } />
 				{ grids }
 			</div>
 		)

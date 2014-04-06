@@ -38,7 +38,6 @@ var HorizontalGrid = React.createClass({
 		docElem.removeEventListener('mouseup', this.stopDragging);
 
 		Data.dragging.emit('change', false, 'row-resize');
-		this.data.data.dragging = null;
 
 		// notify parent
 		this.props.onStop(this.props.key);

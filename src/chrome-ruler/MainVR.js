@@ -24,11 +24,27 @@ var MainVR = React.createClass({
 		this.setState({rulerMouseDown: false});
 	},
 
+	onRulerMouseEnter: function() {
+		this.setState({rulerMouseEntered: true});
+	},
+
 	onRulerMouseLeave: function(e) {
 		this.setState({
+			rulerMouseEntered: false,
 			rulerMouseDown: false,
 			creatingGrid: this.state.rulerMouseDown ? lodash.clone(e) : false
 		});
+	},
+
+	onGridStop: function(gridId) {
+		if (!this.state.rulerMouseEntered) return;
+		delete Data.verticalGrids[gridId];
+		this.render();
+	},
+
+	componentDidUpdate: function() {
+		// only create one grid at a go
+		this.state.creatingGrid && this.setState({creatingGrid: false});
 	},
 
 	render: function() {
@@ -37,16 +53,20 @@ var MainVR = React.createClass({
 			var newGridId = grid.data.id;
 		}
 
-		var grids = lodash.map(Data.verticalGrids, function(grid) {
-			return <VerticalGrid key={ grid.data.id } />
-		});
+		var grids = lodash.map(Data.verticalGrids, (function(grid) {
+			return (
+				<VerticalGrid key={ grid.data.id } onStop={ this.onGridStop }
+						start={ grid.data.id == newGridId }/>
+			)
+		}).bind(this));
 
 		return (
 			<div>
 				<VerticalRuler
-					onMouseDown={ this.onRulerMouseDown }
-					onMouseUp={ this.onRulerMouseUp }
-					onMouseLeave={ this.onRulerMouseLeave } />
+						onMouseDown  = { this.onRulerMouseDown }
+						onMouseUp    = { this.onRulerMouseUp }
+						onMouseEnter = { this.onRulerMouseEnter }
+						onMouseLeave = { this.onRulerMouseLeave } />
 				{ grids }
 			</div>
 		)
@@ -59,8 +79,7 @@ function addGrid(e) {
 	var grid =  new EventEmitter();
 	grid.data = {
 		id: id,
-		left: e.pageX,
-		dragging: e
+		left: e.pageX
 	};
 
 	Data.verticalGrids[id] = grid;
