@@ -1,24 +1,28 @@
 /** @jsx React.DOM */
 
-var Config = require('./chrome-ruler/Config');
-var React = require('react');
+(function() {
+	var Config = require('./chrome-ruler/Config');
+	var React = require('react');
 
-window.React = React;
+	var MainHR = require('./chrome-ruler/MainHR');
+	var MainVR = require('./chrome-ruler/MainVR');
+	var MainCR = require('./chrome-ruler/MainCR');
+	var Shim = require('./chrome-ruler/Shim');
 
-var MainHR = require('./chrome-ruler/MainHR');
-var MainVR = require('./chrome-ruler/MainVR');
-var MainCR = require('./chrome-ruler/MainCR');
-var Shim = require('./chrome-ruler/Shim');
+	var ID = 'chrome-ruler';
 
-var main = document.createElement('div');
-document.body.appendChild(main);
+	if (document.getElementById(ID)) return;
 
-window.main = React.renderComponent(
-	<div>
-		<MainHR />
-		<MainVR />
-		<MainCR />
-		<Shim />
-	</div>,
-	main
-);
+	var main = document.createElement('div');
+	document.body.appendChild(main);
+
+	React.renderComponent(
+		<div id={ ID }>
+			<MainHR />
+			<MainVR />
+			<MainCR />
+			<Shim />
+		</div>,
+		main
+	);
+})();
