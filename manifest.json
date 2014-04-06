@@ -1,18 +1,19 @@
 {
 	"manifest_version": 2,
-
 	"name": "Chrome Ruler",
 	"version": "0.1",
-	"description": "A good old grid / ruler for Chrome browser",
 
+	"description": "A good old grid/ruler for Chrome browser",
 	"icons": {
-		"128": "128_trans.png"
+		"16": "assets/icon_16.png",
+		"48": "assets/icon_48.png",
+		"128": "assets/icon_128.png"
 	},
 
 	"browser_action": {
 		"default_icon": {
-			"19": "38_trans.png",
-			"39": "38_trans.png"
+			"19": "assets/icon_19.png",
+			"38": "assets/icon_38.png"
 		},
 		"default_title": "Chrome Ruler"
 	},
@@ -20,8 +21,9 @@
 	"permissions": [
 		"activeTab"
 	],
+
 	"background": {
-		"scripts": ["background.js"],
-		"persistent": true
+		"scripts": ["./src/chrome/background.js"],
+		"persistent": false
 	}
 }
