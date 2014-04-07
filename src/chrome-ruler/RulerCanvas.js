@@ -74,7 +74,7 @@ var RulerCanvas = React.createClass({
 
 		var holder_style = {
 			'position': 'absolute',
-			'zIndex': Config.zIndex - 1 ,
+			'zIndex': Config.zIndex + 2 ,
 			'top': 0,
 			'left': 0,
 			'display': this.props.active ? 'block' : 'none'
