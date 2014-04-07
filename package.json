@@ -1,6 +1,6 @@
 {
   "name": "chrome-ruler",
-  "version": "0.0.0",
+  "version": "0.2",
   "description": "A ruler extension for Chrome",
   "main": "index.js",
   "scripts": {
