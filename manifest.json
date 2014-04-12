@@ -3,7 +3,7 @@
 	"name": "Grid Ruler",
 	"version": "0.2.1",
 
-	"description": "Grid Ruler extension for Google Chrome™ browser",
+	"description": "Create grids and measure their distance easily.",
 	"icons": {
 		"16": "assets/icon_16.png",
 		"48": "assets/icon_48.png",
