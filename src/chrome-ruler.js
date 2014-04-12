@@ -9,7 +9,7 @@
 	var MainCR = require('./chrome-ruler/MainCR');
 	var Shim = require('./chrome-ruler/Shim');
 
-	var ID = 'chrome-ruler';
+	var ID = 'grid-ruler-extension';
 
 	if (document.getElementById(ID)) return;
 
