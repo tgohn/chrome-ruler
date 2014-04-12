@@ -1,4 +1,4 @@
-/* Commit: 50aeba7b3e0175c247e02dbfe3b9e55db10210aa. Built on: Mon, 07 Apr 2014 16:17:03 GMT */
+/* Commit: fa0ccc5cf91871834d99b8c6a60292f50ac43993. Built on: Sat, 12 Apr 2014 10:56:14 GMT */
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -23743,22 +23743,35 @@ module.exports = require('./lib/React');
 	var MainCR = require('./chrome-ruler/MainCR');
 	var Shim = require('./chrome-ruler/Shim');
 
-	var ID = 'chrome-ruler';
+	var ID = 'grid-ruler-extension';
+	var main;
 
-	if (document.getElementById(ID)) return;
+	if (document.getElementById(ID)) {
+		// hide/unhide react component
+		main = document.getElementById(ID);
 
-	var main = document.createElement('div');
-	document.body.appendChild(main);
+		if (main.style.display == 'none')
+			main.style.display = '';
+		else
+			main.style.display = 'none';
 
-	React.renderComponent(
-		React.DOM.div( {id: ID }, 
-			MainHR(null ),
-			MainVR(null ),
-			MainCR(null ),
-			Shim(null )
-		),
-		main
-	);
+		return;
+	}
+	else {
+		main = document.createElement('div');
+		main.setAttribute('id', ID);
+		document.body.appendChild(main);
+
+		React.renderComponent(
+			React.DOM.div(null, 
+				MainHR(null ),
+				MainVR(null ),
+				MainCR(null ),
+				Shim(null )
+			),
+			main
+		);
+	}
 })();
 
 },{"./chrome-ruler/Config":135,"./chrome-ruler/MainCR":140,"./chrome-ruler/MainHR":141,"./chrome-ruler/MainVR":142,"./chrome-ruler/Shim":144,"react":132}],134:[function(require,module,exports){
