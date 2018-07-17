@@ -6,6 +6,4 @@ var Data = {
 	dragging: new EventEmitter()
 };
 
-window.Data = Data;
-
 module.exports = Data;

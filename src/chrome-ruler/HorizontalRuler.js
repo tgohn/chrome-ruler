@@ -13,7 +13,7 @@ var HorizontalRuler = React.createClass({
 			'position': 'fixed',
 			'top' : 0,
 			'left': 0,
-			'zIndex': Config.zIndex + 1,
+			'zIndex': Config.zIndex + 3,
 			'width': '100%',
 			'height': Config.rulerThickness,
 			'boxShadow': 'rgba(211,211,211,0.5) 0px 0px 5px 2px',

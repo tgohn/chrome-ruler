@@ -1,9 +1,9 @@
 {
 	"manifest_version": 2,
-	"name": "Chrome Ruler",
-	"version": "0.1",
+	"name": "Grid Ruler",
+	"version": "0.2.1",
 
-	"description": "A good old grid/ruler for Chrome browser",
+	"description": "Create grids and measure their distance easily.",
 	"icons": {
 		"16": "assets/icon_16.png",
 		"48": "assets/icon_48.png",
@@ -15,7 +15,7 @@
 			"19": "assets/icon_19.png",
 			"38": "assets/icon_38.png"
 		},
-		"default_title": "Chrome Ruler"
+		"default_title": "Grid Ruler"
 	},
 
 	"permissions": [

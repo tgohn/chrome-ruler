@@ -9,7 +9,7 @@ var Data = require('./Data');
 var VerticalGrid = React.createClass({
 	getInitialState: function() {
 		return {
-			left: 100
+			left: -1
 		};
 	},
 
@@ -17,9 +17,36 @@ var VerticalGrid = React.createClass({
 		var key = this.props.key;
 		this.data = Data.verticalGrids[key];
 
-		if (this.data && this.data.data.dragging) {
-			startDragging.bind(this, this.data.data.dragging)();
+		if (this.props.start) {
+			this.startDragging();
 		}
+	},
+
+	startDragging: function(e) {
+		Data.dragging.emit('change', true, 'col-resize');
+
+		if (e) e.preventDefault();
+
+		var docElem = document.documentElement;
+		docElem.addEventListener('mousemove', this.moveTo);
+		docElem.addEventListener('mouseup', this.stopDragging);
+	},
+
+	stopDragging: function() {
+		var docElem = document.documentElement;
+		docElem.removeEventListener('mousemove', this.moveTo);
+		docElem.removeEventListener('mouseup', this.stopDragging);
+
+		Data.dragging.emit('change', false, 'col-resize');
+
+		// notify parent
+		this.props.onStop(this.props.key);
+	},
+
+	moveTo: function(e) {
+		this.setState({'left': e.pageX}, function() {
+			this.data.data.left = e.pageX;
+		});
 	},
 
 	render: function() {
@@ -44,40 +71,11 @@ var VerticalGrid = React.createClass({
 		};
 
 		return (
-			<div style={ outerDivStyle } onMouseDown={ startDragging.bind(this) }>
+			<div style={ outerDivStyle } onMouseDown={ this.startDragging }>
 				<div style={ highlightStyle } />
 			</div>
 		);
 	}
 });
-
-function startDragging(e) {
-	var self = this;
-	var docBody = document.body;
-	var data = this.data;
-
-	Data.dragging.emit('change', true, 'col-resize');
-
-	// attach event to global
-	docBody.addEventListener('mousemove', move);
-	docBody.addEventListener('mouseup', stop);
-
-	function move(e) {
-		self.setState({
-			'left': e.pageX
-		}, function() {
-			data.data.left = e.pageX;
-		});
-	}
-
-	function stop(e) {
-		// remove events from global
-		docBody.removeEventListener('mousemove', move);
-		docBody.removeEventListener('mouseup', stop);
-
-		Data.dragging.emit('change', false, 'col-resize');
-		data.data.dragging = null;
-	}
-}
 
 module.exports = VerticalGrid;
