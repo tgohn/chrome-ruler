@@ -23820,7 +23820,7 @@ module.exports = {
 
 	proximity: 8,
 
-	zIndex: 999999999
+	zIndex: 2147483647 - 10,
 };
 
 },{}],136:[function(require,module,exports){
