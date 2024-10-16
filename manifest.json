@@ -1,7 +1,7 @@
 {
-	"manifest_version": 2,
+	"manifest_version": 3,
 	"name": "Grid Ruler",
-	"version": "0.2.1",
+	"version": "0.3.0",
 
 	"description": "Create grids and measure their distance easily.",
 	"icons": {
@@ -10,7 +10,7 @@
 		"128": "assets/icon_128.png"
 	},
 
-	"browser_action": {
+	"action": {
 		"default_icon": {
 			"19": "assets/icon_19.png",
 			"38": "assets/icon_38.png"
@@ -18,12 +18,8 @@
 		"default_title": "Grid Ruler"
 	},
 
-	"permissions": [
-		"activeTab"
-	],
-
+	"permissions": ["activeTab", "scripting"],
 	"background": {
-		"scripts": ["./src/chrome/background.js"],
-		"persistent": false
+		"service_worker": "src/chrome/background.js"
 	}
 }

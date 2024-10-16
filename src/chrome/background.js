@@ -3,10 +3,11 @@
 
 var script_srcs = ['dist/chrome-ruler.min.js'];
 
-chrome.browserAction.onClicked.addListener(function(/*tab*/) {
-	script_srcs.forEach(function executeScript(src) {
-		chrome.tabs.executeScript(null, {
-			'file': src
+chrome.action.onClicked.addListener((tab) => {
+	if (!tab.url.includes('chrome://')) {
+		chrome.scripting.executeScript({
+			target: { tabId: tab.id },
+			files: script_srcs
 		});
-	});
+	}
 });
